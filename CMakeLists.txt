@@ -5,6 +5,7 @@ project(bezier-curves)
 set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(deps/glfw)
+add_subdirectory(deps/glad)
 
 add_executable(
     ${PROJECT_NAME}
@@ -20,6 +21,6 @@ if (NOT MSVC)
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE deps/glfw/include)
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad)
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE src/precompiled.hpp)
