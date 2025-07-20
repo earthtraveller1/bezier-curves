@@ -7,15 +7,14 @@ int main() {
         return -1;
     }
 
-    graphics::init();
+    graphics::init(1920.0f, 1080.0f);
 
     while (window.is_open()) {
         graphics::begin();
 
-        graphics::draw_rectangle(-0.5, -0.5, 1.0, 1.0);
+        graphics::draw_rectangle(100.0, 100.0, 100.0, 100.0);
 
         graphics::end();
-
         window.update();
     }
 

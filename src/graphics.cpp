@@ -55,7 +55,7 @@ std::optional<GLuint> make_shader(std::string_view path, GLenum type) {
 }
 }
 
-bool graphics::init() {
+bool graphics::init(uint32_t screen_width, uint32_t screen_height) {
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
         std::cerr << "[EROR]: Failed to load OpenGL functions.\n";
         return false;
@@ -94,6 +94,11 @@ bool graphics::init() {
     glDeleteShader(*vertex_shader);
     glDeleteShader(*fragment_shader);
 
+    glUseProgram(shader_program);
+    const auto projection = glm::ortho(0.0f, static_cast<float>(screen_width), static_cast<float>(screen_height), 0.0f);
+    const auto location = glGetUniformLocation(shader_program, "projection");
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
+
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
@@ -131,6 +136,11 @@ void graphics::draw_rectangle(float x, float y, float width, float height) {
 }
 
 void graphics::end() {
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glUseProgram(shader_program);
+
     glBindVertexArray(vao);
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_DYNAMIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * elements.size(), elements.data(), GL_DYNAMIC_DRAW);

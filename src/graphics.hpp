@@ -5,7 +5,7 @@ struct Vertex {
 };
 
 namespace graphics {
-bool init();
+bool init(uint32_t screen_width, uint32_t screen_height);
 
 void begin();
 
