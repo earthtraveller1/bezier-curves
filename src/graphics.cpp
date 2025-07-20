@@ -12,6 +12,9 @@ GLuint vao;
 GLuint vbo;
 GLuint ebo;
 
+std::vector<Vertex> vertices;
+std::vector<uint32_t> elements;
+
 std::optional<GLuint> make_shader(std::string_view path, GLenum type) {
     std::ifstream file(path.data());
     if (!file) {
@@ -92,18 +95,32 @@ bool graphics::init() {
     glDeleteShader(*fragment_shader);
 
     glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
     glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
     glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position)));
+    glEnableVertexAttribArray(0);
 
     return true;
 }
 
 void graphics::begin() {
-
+    vertices.clear();
 }
 
 void graphics::end() {
+    glBindVertexArray(vao);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_DYNAMIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * elements.size(), elements.data(), GL_DYNAMIC_DRAW);
 
+    glDrawElements(GL_TRIANGLES, elements.size(), GL_UNSIGNED_INT, nullptr);
+
+    glBindVertexArray(0);
 }
 
 void graphics::deinit() {

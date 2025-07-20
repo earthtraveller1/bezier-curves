@@ -1,5 +1,8 @@
 #pragma once
 
+struct Vertex {
+    glm::vec2 position;
+};
 
 namespace graphics {
 bool init();
