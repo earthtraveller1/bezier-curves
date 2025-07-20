@@ -110,6 +110,10 @@ bool graphics::init(uint32_t screen_width, uint32_t screen_height) {
 
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position)));
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 1, GL_INT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, is_circle)));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, center)));
+    glEnableVertexAttribArray(2);
 
     return true;
 }
@@ -120,11 +124,34 @@ void graphics::begin() {
 }
 
 void graphics::draw_rectangle(float x, float y, float width, float height) {
+    const auto is_circle = false;
+    const glm::vec2 circle_center{};
     std::array rect_vertices {
-        Vertex { { x, y }},
-        Vertex { { x + width, y }},
-        Vertex { { x + width, y + height }},
-        Vertex { { x, y + height }},
+        Vertex { { x, y }, is_circle, circle_center},
+        Vertex { { x + width, y }, is_circle, circle_center},
+        Vertex { { x + width, y + height }, is_circle, circle_center},
+        Vertex { { x, y + height }, is_circle, circle_center},
+    };
+
+    std::array<uint32_t, 6> rect_elements {
+        0, 1, 2, 0, 3, 2
+    };
+
+    vertices.insert(vertices.end(), rect_vertices.begin(), rect_vertices.end());
+    elements.insert(elements.end(), rect_elements.begin(), rect_elements.end());
+}
+
+void graphics::draw_circle(float x, float y, float radius) {
+    const auto width = radius * 2;
+    const auto height = radius * 2;
+    glm::vec2 circle_center{x + width/2, y + height/2};
+
+    const auto is_circle = true;
+    std::array rect_vertices {
+        Vertex { { x, y }, is_circle, circle_center},
+        Vertex { { x + width, y }, is_circle, circle_center},
+        Vertex { { x + width, y + height }, is_circle, circle_center},
+        Vertex { { x, y + height }, is_circle, circle_center},
     };
 
     std::array<uint32_t, 6> rect_elements {
