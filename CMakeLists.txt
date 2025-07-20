@@ -22,7 +22,7 @@ if (NOT MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
-target_include_directories(${PROJECT_NAME} PRIVATE deps/glfw/include)
+target_include_directories(${PROJECT_NAME} PRIVATE deps/glfw/include deps/glm)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad)
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE src/precompiled.hpp)
