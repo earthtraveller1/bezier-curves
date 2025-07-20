@@ -8,6 +8,9 @@
 
 namespace {
 GLuint shader_program;
+GLuint vao;
+GLuint vbo;
+GLuint ebo;
 
 std::optional<GLuint> make_shader(std::string_view path, GLenum type) {
     std::ifstream file(path.data());
@@ -84,6 +87,13 @@ bool graphics::init() {
 
         return false;
     }
+
+    glDeleteShader(*vertex_shader);
+    glDeleteShader(*fragment_shader);
+
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+    glGenBuffers(1, &ebo);
 
     return true;
 }
