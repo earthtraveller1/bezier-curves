@@ -9,6 +9,8 @@ bool init();
 
 void begin();
 
+void draw_rectangle(float x, float y, float width, float height);
+
 void end();
 
 void deinit();

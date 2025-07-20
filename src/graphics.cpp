@@ -111,6 +111,23 @@ bool graphics::init() {
 
 void graphics::begin() {
     vertices.clear();
+    elements.clear();
+}
+
+void graphics::draw_rectangle(float x, float y, float width, float height) {
+    std::array rect_vertices {
+        Vertex { { x, y }},
+        Vertex { { x + width, y }},
+        Vertex { { x + width, y + height }},
+        Vertex { { x, y + height }},
+    };
+
+    std::array<uint32_t, 6> rect_elements {
+        0, 1, 2, 0, 3, 2
+    };
+
+    vertices.insert(vertices.end(), rect_vertices.begin(), rect_vertices.end());
+    elements.insert(elements.end(), rect_elements.begin(), rect_elements.end());
 }
 
 void graphics::end() {
