@@ -7,4 +7,6 @@ bool init();
 void begin();
 
 void end();
+
+void deinit();
 }

@@ -97,3 +97,18 @@ bool graphics::init() {
 
     return true;
 }
+
+void graphics::begin() {
+
+}
+
+void graphics::end() {
+
+}
+
+void graphics::deinit() {
+    glDeleteBuffers(1, &ebo);
+    glDeleteBuffers(1, &vbo);
+    glDeleteVertexArrays(1, &vao);
+    glDeleteProgram(shader_program);
+}

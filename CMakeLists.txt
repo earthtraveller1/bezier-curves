@@ -10,9 +10,11 @@ add_subdirectory(deps/glad)
 add_executable(
     ${PROJECT_NAME}
 
+    src/graphics.cpp
     src/main.cpp
     src/window.cpp
 
+    src/graphics.hpp
     src/window.hpp
 )
 
