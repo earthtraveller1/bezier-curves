@@ -1,3 +1,5 @@
+#include <glad/glad.h>
+
 #include "window.hpp"
 
 Window::Window() {
@@ -6,7 +8,7 @@ Window::Window() {
         return;
     }
 
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    // glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -26,6 +28,11 @@ Window::Window() {
     }
 
     glfwMakeContextCurrent(m_window);
+
+    glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int width, int height) {
+        (void)window;
+        glViewport(0, 0, width, height);
+    });
 
     is_okay = true;
 }

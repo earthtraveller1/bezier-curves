@@ -15,6 +15,8 @@ GLuint ebo;
 std::vector<Vertex> vertices;
 std::vector<uint32_t> elements;
 
+const Window* g_window = nullptr;
+
 std::optional<GLuint> make_shader(std::string_view path, GLenum type) {
     std::ifstream file(path.data());
     if (!file) {
@@ -56,6 +58,7 @@ std::optional<GLuint> make_shader(std::string_view path, GLenum type) {
 }
 
 bool graphics::init(const Window& window) {
+    g_window = &window;
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
         std::cerr << "[EROR]: Failed to load OpenGL functions.\n";
         return false;
@@ -93,13 +96,6 @@ bool graphics::init(const Window& window) {
 
     glDeleteShader(*vertex_shader);
     glDeleteShader(*fragment_shader);
-
-    const auto [screen_width, screen_height] = window.get_window_size();
-
-    glUseProgram(shader_program);
-    const auto projection = glm::ortho(0.0f, static_cast<float>(screen_width), static_cast<float>(screen_height), 0.0f);
-    const auto location = glGetUniformLocation(shader_program, "projection");
-    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -165,10 +161,19 @@ void graphics::draw_circle(float x, float y, float radius) {
 }
 
 void graphics::end() {
+    const auto [screen_width, screen_height] = g_window->get_window_size();
+    const auto aspect_ratio = (float)screen_width / (float)screen_height;
+    const auto width = 1000.0f;
+    const auto height = width / aspect_ratio;
+
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(shader_program);
+
+    const auto projection = glm::ortho(0.0f, width, height, 0.0f);
+    const auto location = glGetUniformLocation(shader_program, "projection");
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(projection));
 
     glBindVertexArray(vao);
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_DYNAMIC_DRAW);
