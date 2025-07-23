@@ -3,11 +3,16 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
+struct WindowDimensions {
+    int width;
+    int height;
+};
+
 class Window {
 public:
     bool is_okay = false;
 
-    Window(uint32_t width, uint32_t height, std::string_view title);
+    Window();
 
     Window(Window&) = delete;
     Window& operator=(Window&) = delete;
@@ -24,6 +29,12 @@ public:
         double width, height;
         glfwGetCursorPos(m_window, &width, &height);
         return glm::vec2{width, height};
+    }
+
+    inline WindowDimensions get_window_size() const {
+        WindowDimensions dims{};
+        glfwGetWindowSize(m_window, &dims.width, &dims.height);
+        return dims;
     }
 
     inline void update() const {
