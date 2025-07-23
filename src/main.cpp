@@ -12,7 +12,7 @@ int main() {
     while (window.is_open()) {
         graphics::begin();
 
-        graphics::draw_circle(100.0, 100.0, 100.0, 100.0);
+        graphics::draw_circle(100.0, 100.0, 50.0);
 
         graphics::end();
         window.update();
