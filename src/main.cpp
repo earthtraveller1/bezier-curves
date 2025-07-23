@@ -2,12 +2,12 @@
 #include "graphics.hpp"
 
 int main() {
-    Window window(1920, 1080, "Bezier Curves");
+    Window window;
     if (!window.is_okay) {
         return -1;
     }
 
-    graphics::init(1920.0f, 1080.0f);
+    graphics::init(window);
 
     while (window.is_open()) {
         graphics::begin();

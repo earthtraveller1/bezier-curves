@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 
 #include "graphics.hpp"
-#include "GLFW/glfw3.h"
+#include "window.hpp"
 
 namespace {
 GLuint shader_program;
@@ -55,7 +55,7 @@ std::optional<GLuint> make_shader(std::string_view path, GLenum type) {
 }
 }
 
-bool graphics::init(uint32_t screen_width, uint32_t screen_height) {
+bool graphics::init(const Window& window) {
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
         std::cerr << "[EROR]: Failed to load OpenGL functions.\n";
         return false;
@@ -93,6 +93,8 @@ bool graphics::init(uint32_t screen_width, uint32_t screen_height) {
 
     glDeleteShader(*vertex_shader);
     glDeleteShader(*fragment_shader);
+
+    const auto [screen_width, screen_height] = window.get_window_size();
 
     glUseProgram(shader_program);
     const auto projection = glm::ortho(0.0f, static_cast<float>(screen_width), static_cast<float>(screen_height), 0.0f);

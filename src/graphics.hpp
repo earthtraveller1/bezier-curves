@@ -6,8 +6,10 @@ struct Vertex {
     glm::vec2 center;
 };
 
+class Window;
+
 namespace graphics {
-bool init(uint32_t screen_width, uint32_t screen_height);
+bool init(const Window& window);
 
 void begin();
 
