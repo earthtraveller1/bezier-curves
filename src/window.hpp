@@ -21,8 +21,8 @@ public:
     }
 
     inline glm::vec2 get_mouse_pos() const {
-        int width, height;
-        glfwGetWindowSize(m_window, &width, &height);
+        double width, height;
+        glfwGetCursorPos(m_window, &width, &height);
         return glm::vec2{width, height};
     }
 
