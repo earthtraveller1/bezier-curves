@@ -27,11 +27,25 @@ Window::Window() {
         return;
     }
 
+    glfwSetWindowUserPointer(m_window, reinterpret_cast<void*>(this));
+
     glfwMakeContextCurrent(m_window);
 
     glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int width, int height) {
         (void)window;
         glViewport(0, 0, width, height);
+    });
+
+    glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int button, int action, int mods) {
+        (void)mods;
+
+        auto m_window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+
+        if (action == GLFW_PRESS) {
+            m_window->m_button_just_pressed[button] = true;
+        } else if (action == GLFW_RELEASE) {
+            m_window->m_button_just_released[button] = true;
+        }
     });
 
     is_okay = true;
