@@ -190,7 +190,7 @@ void graphics::draw_line(float x1, float y1, float x2, float y2, float line_widt
     const auto vert_2 = b - offset_vector;
     const auto vert_3 = b + offset_vector;
 
-    bool is_circle = true;
+    bool is_circle = false;
     std::array line_vertices {
         Vertex { vert_0, is_circle, {}},
         Vertex { vert_1, is_circle, {}},
