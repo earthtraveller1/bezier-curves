@@ -160,6 +160,41 @@ void graphics::draw_circle(float x, float y, float radius) {
     elements.insert(elements.end(), rect_elements.begin(), rect_elements.end());
 }
 
+void graphics::draw_line(float x1, float y1, float x2, float y2, float line_width) {
+    // m = y/x
+    // y = mx
+    // x = m/y
+    // y/x = -x_1/y_1
+    // y = -x_1
+    // x = y_1
+
+    glm::vec2 a{x1, y1};
+    glm::vec2 b{x2, y2};
+
+    const auto line_vector = b - a;
+    const auto offset_vector = glm::normalize(glm::vec2{line_vector.y, -line_vector.x}) * line_width;
+
+    const auto vert_0 = a + offset_vector;
+    const auto vert_1 = a - offset_vector;
+    const auto vert_2 = b - offset_vector;
+    const auto vert_3 = b + offset_vector;
+
+    bool is_circle = true;
+    std::array line_vertices {
+        Vertex { vert_0, is_circle, {}},
+        Vertex { vert_1, is_circle, {}},
+        Vertex { vert_2, is_circle, {}},
+        Vertex { vert_3, is_circle, {}},
+    };
+
+    std::array<uint32_t, 6> rect_elements {
+        0, 1, 2, 0, 3, 2
+    };
+
+    vertices.insert(vertices.end(), line_vertices.begin(), line_vertices.end());
+    elements.insert(elements.end(), rect_elements.begin(), rect_elements.end());
+}
+
 void graphics::end() {
     const auto [screen_width, screen_height] = g_window->get_window_size();
     const auto aspect_ratio = (float)screen_width / (float)screen_height;
