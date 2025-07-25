@@ -147,14 +147,14 @@ void graphics::draw_rectangle(float x, float y, float width, float height) {
 void graphics::draw_circle(float x, float y, float radius) {
     const auto width = radius * 2;
     const auto height = radius * 2;
-    glm::vec2 circle_center{x + width/2, y + height/2};
+    glm::vec2 circle_center{x, y};
 
     const auto is_circle = true;
     std::array rect_vertices {
-        Vertex { { x, y }, is_circle, circle_center},
-        Vertex { { x + width, y }, is_circle, circle_center},
-        Vertex { { x + width, y + height }, is_circle, circle_center},
-        Vertex { { x, y + height }, is_circle, circle_center},
+        Vertex { { x - width/2, y - height/2 }, is_circle, circle_center},
+        Vertex { { x + width/2, y - height/2 }, is_circle, circle_center},
+        Vertex { { x + width/2, y + height/2 }, is_circle, circle_center},
+        Vertex { { x - width/2, y + height/2 }, is_circle, circle_center},
     };
 
     const auto elements_offset = static_cast<uint32_t>(vertices.size());
