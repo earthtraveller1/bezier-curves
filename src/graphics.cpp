@@ -123,16 +123,21 @@ void graphics::begin() {
 
 void graphics::draw_rectangle(float x, float y, float width, float height) {
     const auto is_circle = false;
-    const glm::vec2 circle_center{};
     std::array rect_vertices {
-        Vertex { { x, y }, is_circle, circle_center},
-        Vertex { { x + width, y }, is_circle, circle_center},
-        Vertex { { x + width, y + height }, is_circle, circle_center},
-        Vertex { { x, y + height }, is_circle, circle_center},
+        Vertex { { x, y }, is_circle, {}},
+        Vertex { { x + width, y }, is_circle, {}},
+        Vertex { { x + width, y + height }, is_circle, {}},
+        Vertex { { x, y + height }, is_circle, {}},
     };
 
+    const auto elements_offset = static_cast<uint32_t>(vertices.size());
     std::array<uint32_t, 6> rect_elements {
-        0, 1, 2, 0, 3, 2
+        0 + elements_offset,
+        1 + elements_offset,
+        2 + elements_offset, 
+        0 + elements_offset, 
+        3 + elements_offset, 
+        2 + elements_offset
     };
 
     vertices.insert(vertices.end(), rect_vertices.begin(), rect_vertices.end());
@@ -152,8 +157,14 @@ void graphics::draw_circle(float x, float y, float radius) {
         Vertex { { x, y + height }, is_circle, circle_center},
     };
 
+    const auto elements_offset = static_cast<uint32_t>(vertices.size());
     std::array<uint32_t, 6> rect_elements {
-        0, 1, 2, 0, 3, 2
+        0 + elements_offset,
+        1 + elements_offset,
+        2 + elements_offset, 
+        0 + elements_offset, 
+        3 + elements_offset, 
+        2 + elements_offset
     };
 
     vertices.insert(vertices.end(), rect_vertices.begin(), rect_vertices.end());
@@ -187,8 +198,14 @@ void graphics::draw_line(float x1, float y1, float x2, float y2, float line_widt
         Vertex { vert_3, is_circle, {}},
     };
 
+    const auto elements_offset = static_cast<uint32_t>(vertices.size());
     std::array<uint32_t, 6> rect_elements {
-        0, 1, 2, 0, 3, 2
+        0 + elements_offset,
+        1 + elements_offset,
+        2 + elements_offset, 
+        0 + elements_offset, 
+        3 + elements_offset, 
+        2 + elements_offset
     };
 
     vertices.insert(vertices.end(), line_vertices.begin(), line_vertices.end());
